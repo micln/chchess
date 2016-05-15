@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>中国象棋</title>
+    <link rel="stylesheet" href="chess.css">
+</head>
+<body>
+
+<div id="main">
+    <div id="map">
+
+    </div>
+</div>
+
+
+<script src="jquery.min.js"></script>
+<script src="lib.js"></script>
+<script src="piece.js"></script>
+<script src="map.js"></script>
+<script>
+    var chess = new ChessMap("#map", {});
+    setTimeout(function () {
+
+        $.each([
+            [6, 2, 2],
+            [20, 2, 0],
+            [2, 0, 1],
+            [6, 1, 4],
+            [2, 7, 1]
+        ], function (idx, demo) {
+            setTimeout(function () {
+                chess.chess[demo[0]].goto(demo[1], demo[2]);
+            }, 250 * idx);
+        })
+
+    });
+
+</script>
+</body>
+</html>

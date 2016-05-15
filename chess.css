@@ -1,0 +1,42 @@
+#map {
+    outline: 1px solid;
+    margin: 50px;
+}
+
+.row {
+    clear: both;
+}
+
+.box {
+    float: left;
+    outline: 1px solid;
+    width: 60px;
+    height: 60px;;
+}
+
+.row:nth-child(5) .box {
+    outline: none;
+}
+
+.piece {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border: 1px solid;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 200%;
+    line-height: 1.5;
+    cursor: -webkit-grab;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.piece.c-red {
+    color: red;
+
+}
+
+.piece.c-blue {
+    color: blue;
+}
