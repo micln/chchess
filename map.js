@@ -21,21 +21,18 @@ function ChessMap(query, options) {
 		//  获得两点之间所有的棋子 (仅支持同行或同列)
 		lineChess: function (x1, y1, x2, y2) {
 			var ret = [];
-			var step = (x2 - x1) + (y2 - y1);
+			var step = Math.abs(x2 - x1) + Math.abs(y2 - y1);
 			var dx = (x2 - x1) / step;
 			var dy = (y2 - y1) / step;
 			console.log(dx, dy);
 			for (var i = 0; i <= step; i++) {
 				var x = x1 + dx * i;
 				var y = y1 + dy * i;
-				for (var j in that.chess) {
-					var chess = that.chess[j];
-					if (chess.x == x && chess.y == y) {
-						ret.push(chess);
-					}
+				if (that.bitmap[x][y]) {
+					ret.push(that.bitmap[x][y]);
 				}
 			}
-			// console.log(ret);
+			console.log(ret);
 			return ret;
 		}
 	};
@@ -43,7 +40,7 @@ function ChessMap(query, options) {
 
 	this.hideChess = function (chess) {
 		this.bitmap[chess.x][chess.y] = null;
-		chess.html.hide();
+		chess.hide();
 	};
 
 	this.showChess = function (chess) {
@@ -74,10 +71,10 @@ function ChessMap(query, options) {
 
 			switch (chess.v) {
 				case '車':
-					if (!(p.isCommentLoad(chess)
-						&& check.lineChess(chess.x, chess.y, x, y).length <= 2
+					if (!(p.isCommentLoad(chess))) throw  '专心直走';    //  共线
+					if (!(check.lineChess(chess.x, chess.y, x, y).length === Number(Boolean(dst)) + 1
 						&& (!dst || dst.color !== chess.color))) {
-						throw  '不可达';
+						throw  '撞死啦';
 					}
 					break;
 
@@ -90,7 +87,12 @@ function ChessMap(query, options) {
 					break;
 
 				case '象':
+					if (p.distance2From(chess) !== 8) throw '象走田';
+					if (that.bitmap[(chess.x + p.x) / 2][(chess.y + p.y) / 2]) throw '鳖腿了';
+					if (dst && dst.color === chess.color) throw '不要内战';
+					if ((chess.x <= 4) !== (p.x <= 4)) throw '淹死了';
 					break;
+
 				case '仕':
 					break;
 				case '将':
@@ -113,7 +115,7 @@ function ChessMap(query, options) {
 		}, function () {
 
 			//  检查吃子
-			var army = that.bitmap[p.x][p.y]
+			var army = that.bitmap[p.x][p.y];
 			if (army) {
 				that.hideChess(army);
 			}

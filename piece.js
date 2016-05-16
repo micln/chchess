@@ -7,8 +7,13 @@ function Piece(option) {
 		this[x] = option[x];
 	}
 
-	this.dead = false;
+	this.isHide = false;
 	this.html = null;
+
+	this.hide = function () {
+		this.isHide = true;
+		this.html.hide();
+	};
 
 	this.goto = function (x, y) {
 		that.map.moveChess(this, x, y);
